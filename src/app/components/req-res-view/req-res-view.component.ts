@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ReqResOperationService } from '../../services/req-res-operation.service';
 
 @Component({
   selector: 'app-req-res-view',
@@ -7,7 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReqResViewComponent implements OnInit {
 
-  constructor() { }
+  private reqResData: any;
+  constructor(
+    private _reqRes: ReqResOperationService
+  ) { 
+    this._reqRes.reqResPutPost$.subscribe(res => {
+      if(res) {
+        this.reqResData = res;
+        console.log('this.reqResData: ', this.reqResData);
+      }
+    }, err => {})
+  }
 
   ngOnInit() {
   }

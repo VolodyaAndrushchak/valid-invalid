@@ -13,6 +13,6 @@ export class HttpRequestsService {
   ) { }
 
   public callHttpMethod(method, url, body) {
-    return this._http[method](url, body).pipe(map((res) => {return {res, body}}), catchError(e => of({res: e, body})));
+    return this._http[method](url, body).pipe(map((res) => {return {res, body}}), catchError(e => of({res: e.error, body})));
   }
 }

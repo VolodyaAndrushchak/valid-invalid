@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 import { HttpRequestsService } from '../../services/http-requests.service';
+import { ReqResOperationService } from '../../services/req-res-operation.service';
 import { environment } from '../../../environments/environment';
 import { Method } from '../../interfaces/method.interface';
 
@@ -17,7 +18,8 @@ export class InputFormEndpointComponent implements OnInit {
   public otherValue = environment.wrongPropValue;
   private methods: Array<Method> = environment.methods;
   constructor(
-    private _http: HttpRequestsService
+    private _http: HttpRequestsService,
+    private _reqRes: ReqResOperationService
   ) {
     this.inputData = new FormGroup(
       {
@@ -56,19 +58,16 @@ export class InputFormEndpointComponent implements OnInit {
     this.testCases.push({body: originBody});
     originBody['extraProperty2'] = 'test value 2';
     this.testCases.push({body: originBody});
-    
+
     let promiseRequest = [];
 
     this.testCases.forEach(({body}, i) => {
       promiseRequest.push(this._http.callHttpMethod(this.inputData.value.method, this.inputData.value.url, body));
     })
 
-    const testData = forkJoin(promiseRequest).subscribe(res => {
+    forkJoin(promiseRequest).subscribe(res => {
+      this._reqRes.reqResPutPostData = res;
       console.log(res)
-    }, err => {
-      console.log(err);
-    }); 
-    console.log(testData)
+    }, err => {}); 
   }
-
 }
