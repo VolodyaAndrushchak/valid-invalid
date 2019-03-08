@@ -1,0 +1,17 @@
+<div class="wrapper">
+  <h3>Input form</h3>
+  <form [formGroup]="inputData" (ngSubmit)="setInputData()">
+    <label for="url">URL</label>
+    <input name="url" formControlName="url" class="form-control"/>
+
+    <label for="method">Chose type of method</label>
+    <select name="method" class="form-control" formControlName="method">
+      <option *ngFor="let method of methods" [value]="method.shortName">{{method.fullName}}</option>
+    </select>
+
+    <label for="body">Body</label>
+    <textarea name="body" formControlName="body" class="form-control"></textarea>
+
+    <button class="btn btn-danger btn-submit">Start</button>
+  </form>
+</div>

@@ -3,7 +3,38 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  wrongPropValue: [
+    null,
+    undefined,
+    '',
+    false,
+    true,
+    "string",
+    12312313123
+  ],
+  methods: [
+    {
+      id: 0,
+      fullName: 'GET',
+      shortName: 'get'
+    },
+    {
+      id: 1,
+      fullName: 'POST',
+      shortName: 'post'
+    },
+    {
+      id: 2,
+      fullName: 'PUT',
+      shortName: 'put'
+    },
+    {
+      id: 3,
+      fullName: 'DELETE',
+      shortName: 'del'
+    },
+  ]
 };
 
 /*
