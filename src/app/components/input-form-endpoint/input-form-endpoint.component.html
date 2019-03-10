@@ -9,8 +9,13 @@
       <option *ngFor="let method of methods" [value]="method.shortName">{{method.fullName}}</option>
     </select>
 
-    <label for="body">Body</label>
-    <textarea name="body" formControlName="body" class="form-control"></textarea>
+    <label for="body" *ngIf="
+      inputData.controls.method.value === 'post' || 
+      inputData.controls.method.value === 'put'">Body</label>
+    <textarea name="body" formControlName="body" class="form-control" *ngIf="
+      inputData.controls.method.value === 'post' || 
+      inputData.controls.method.value === 'put'"
+    ></textarea>
 
     <button class="btn btn-danger btn-submit">Start</button>
   </form>

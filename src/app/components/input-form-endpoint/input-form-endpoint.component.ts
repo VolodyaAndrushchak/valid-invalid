@@ -41,24 +41,31 @@ export class InputFormEndpointComponent implements OnInit {
   }
 
   private setInputData() {
-    let originBody = JSON.parse(this.inputData.value.body.replace(/\r?\n|\r/g, ''));
-    this.testCases.push({body: originBody});
-    this.testCases.push({body: {}});
-    for (const property in originBody) {
-      if (originBody.hasOwnProperty(property)) {
-        this.otherValue.forEach(item => {
-          originBody[property] = item;
-          this.testCases.push({body:  _.cloneDeep(originBody)});
-        })
-      }
+    let originBody;
+    if (this.inputData.value.method === 'put' || this.inputData.value.method === 'post') {
       originBody = JSON.parse(this.inputData.value.body.replace(/\r?\n|\r/g, ''));
+      this.testCases.push({body: originBody, state: environment.HTTP_BODY_STATE.ORIGIN});
     }
+    
+    this.testCases.push({body: {}, state: environment.HTTP_BODY_STATE.GENERETED});
+    
+    if (this.inputData.value.method === 'put' || this.inputData.value.method === 'post') {
+      for (const property in originBody) {
+        if (originBody.hasOwnProperty(property)) {
+          this.otherValue.forEach(item => {
+            originBody[property] = item;
+            this.testCases.push({body:  _.cloneDeep(originBody)});
+          })
+        }
+        originBody = JSON.parse(this.inputData.value.body.replace(/\r?\n|\r/g, ''));
+      }
 
-    //add redundant properties
-    originBody['extraProperty1'] = 'test value 1';
-    this.testCases.push({body: originBody});
-    originBody['extraProperty2'] = 'test value 2';
-    this.testCases.push({body: originBody});
+      //add redundant properties
+      originBody['extraProperty1'] = 'test value 1';
+      this.testCases.push({body: originBody});
+      originBody['extraProperty2'] = 'test value 2';
+      this.testCases.push({body: originBody});
+    }
 
     let promiseRequest = [];
 

@@ -32,9 +32,13 @@ export const environment = {
     {
       id: 3,
       fullName: 'DELETE',
-      shortName: 'del'
+      shortName: 'delete'
     },
-  ]
+  ],
+  HTTP_BODY_STATE: {
+    ORIGIN: 'ORIGIN',
+    GENERETED: 'GENERETED'
+  }
 };
 
 /*
