@@ -14,7 +14,6 @@ export class ReqResItemComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log('item: ', this.item);
   }
 
 }
