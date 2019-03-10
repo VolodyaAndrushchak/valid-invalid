@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { forkJoin } from 'rxjs';
 import { HttpRequestsService } from '../../services/http-requests.service';
+import { ReqResOperationService } from '../../services/req-res-operation.service';
 import { environment } from '../../../environments/environment';
 import { Method } from '../../interfaces/method.interface';
+import * as _ from 'lodash' ; 
 
 @Component({
   selector: 'app-input-form-endpoint',
@@ -16,7 +19,8 @@ export class InputFormEndpointComponent implements OnInit {
   public otherValue = environment.wrongPropValue;
   private methods: Array<Method> = environment.methods;
   constructor(
-    private _http: HttpRequestsService
+    private _http: HttpRequestsService,
+    private _reqRes: ReqResOperationService
   ) {
     this.inputData = new FormGroup(
       {
@@ -38,14 +42,14 @@ export class InputFormEndpointComponent implements OnInit {
 
   private setInputData() {
     let originBody = JSON.parse(this.inputData.value.body.replace(/\r?\n|\r/g, ''));
-    this.testCases.push({body: JSON.parse(this.inputData.value.body.replace(/\r?\n|\r/g, ''))});
+    this.testCases.push({body: originBody});
     this.testCases.push({body: {}});
-    /*for (const property in originBody) {
+    for (const property in originBody) {
       if (originBody.hasOwnProperty(property)) {
-        for (let i = 0; i < this.otherValue.length; i++) {
-          originBody[property] = this.otherValue[i];
-          this.testCases.push({body: originBody});
-        }
+        this.otherValue.forEach(item => {
+          originBody[property] = item;
+          this.testCases.push({body:  _.cloneDeep(originBody)});
+        })
       }
       originBody = JSON.parse(this.inputData.value.body.replace(/\r?\n|\r/g, ''));
     }
@@ -56,15 +60,14 @@ export class InputFormEndpointComponent implements OnInit {
     originBody['extraProperty2'] = 'test value 2';
     this.testCases.push({body: originBody});
 
-    console.log(this.testCases);*/
+    let promiseRequest = [];
 
-    this.testCases.map(({body}) => {
-      this._http.callHttpMethod(this.inputData.value.method, this.inputData.value.url, body).subscribe(res => {
-        console.log('res: ', res);
-      }, err => {
-        console.log('err: ', err);
-      });
-    }); 
+    this.testCases.forEach(({body}, i) => {
+      promiseRequest.push(this._http.callHttpMethod(this.inputData.value.method, this.inputData.value.url, body));
+    })
+
+    forkJoin(promiseRequest).subscribe(res => {
+      this._reqRes.reqResPutPostData = res;
+    }, err => {}); 
   }
-
 }

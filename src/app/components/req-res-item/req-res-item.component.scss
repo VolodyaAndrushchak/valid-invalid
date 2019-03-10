@@ -1,0 +1,29 @@
+.request, .response {
+    width: 398px;
+    display: inline-flex;
+    margin-bottom: 0;
+    height: 95%;
+    overflow-y: scroll;
+}
+
+.request {
+    border-right: 1px solid darkred;
+}
+
+.response {
+    padding-left:10px;
+}
+
+.wrapper {
+    border: 1px solid black;
+    height: 100px;
+}
+
+pre {
+    font-size: 12px;
+}
+
+.line {
+    border: 1px solid red;
+    height: auto;
+}
