@@ -16,7 +16,8 @@
       inputData.controls.method.value === 'post' || 
       inputData.controls.method.value === 'put'"
     ></textarea>
+    <p *ngIf="!isJsonValid" class="error">JSON body has invalid structure!</p>
 
-    <button class="btn btn-danger btn-submit">Start</button>
+    <button class="btn btn-danger btn-submit" [disabled]="inputData.invalid">Start</button>
   </form>
 </div>
