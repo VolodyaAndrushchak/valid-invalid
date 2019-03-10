@@ -15,6 +15,7 @@ export class ReqResOperationService {
   }
 
   public set reqResPutPostData(value: any) {
+    this.reqResPutPost$.next([]);
     this.reqResPutPost$.next(value);
   }
 }
