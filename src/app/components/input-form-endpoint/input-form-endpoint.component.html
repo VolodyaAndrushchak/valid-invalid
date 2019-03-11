@@ -5,7 +5,7 @@
     <input name="url" formControlName="url" class="form-control"/>
 
     <label for="method">Chose type of method</label>
-    <select name="method" class="form-control" formControlName="method">
+    <select name="method" class="form-control" formControlName="method" (change)="changeMethod()">
       <option *ngFor="let method of methods" [value]="method.shortName">{{method.fullName}}</option>
     </select>
 
@@ -15,6 +15,13 @@
     <textarea name="body" formControlName="body" class="form-control" *ngIf="
       inputData.controls.method.value === 'post' || 
       inputData.controls.method.value === 'put'"
+    ></textarea>
+    <label for="body" *ngIf="
+      inputData.controls.method.value === 'get' || 
+      inputData.controls.method.value === 'delete'">Query params</label>
+    <textarea name="body" formControlName="queryParams" class="form-control" *ngIf="
+      inputData.controls.method.value === 'get' || 
+      inputData.controls.method.value === 'delete'"
     ></textarea>
     <p *ngIf="!isJsonValid" class="error">JSON body has invalid structure!</p>
 

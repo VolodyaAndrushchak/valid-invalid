@@ -31,9 +31,9 @@ export class InputFormEndpointComponent implements OnInit {
         method: new FormControl('', [
           Validators.required
         ]),
-        body: new FormControl('', [
-          Validators.required
-        ]),
+        body: new FormControl('', []),
+        queryParams: new FormControl('', [
+        ])
       }
     );
   }
@@ -49,6 +49,24 @@ export class InputFormEndpointComponent implements OnInit {
     }
     return true;
 }
+
+private changeMethod() {
+  const method = this.inputData.value.method;
+  if (method === 'put' || method === 'post') {
+    this.inputData.controls['body'].setValidators([Validators.required])
+    this.inputData.controls['queryParams'].clearValidators();
+    this.updateControls();
+  } else {
+    this.inputData.controls['queryParams'].setValidators([Validators.required])
+    this.inputData.controls['body'].clearValidators();
+    this.updateControls();
+  }
+}
+
+  private updateControls() {
+    this.inputData.controls['body'].updateValueAndValidity();
+    this.inputData.controls['queryParams'].updateValueAndValidity();
+  }
 
   private setInputData() {
     let originBody;
