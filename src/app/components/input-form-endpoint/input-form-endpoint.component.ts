@@ -18,6 +18,7 @@ export class InputFormEndpointComponent implements OnInit {
   public testCases: Array<any> = [];
   public otherValue = environment.wrongPropValue;
   private methods: Array<Method> = environment.methods;
+  private isJsonValid: boolean = true;
   constructor(
     private _http: HttpRequestsService,
     private _reqRes: ReqResOperationService
@@ -25,7 +26,7 @@ export class InputFormEndpointComponent implements OnInit {
     this.inputData = new FormGroup(
       {
         url: new FormControl('', [
-          Validators.required
+          Validators.required,
         ]),
         method: new FormControl('', [
           Validators.required
@@ -40,9 +41,21 @@ export class InputFormEndpointComponent implements OnInit {
   ngOnInit() {
   }
 
+   IsJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
   private setInputData() {
     let originBody;
+    this.isJsonValid = true;
     if (this.inputData.value.method === 'put' || this.inputData.value.method === 'post') {
+      this.isJsonValid = this.IsJsonString(this.inputData.value.body);
+      if (!this.isJsonValid) throw new Error('Invalid json');
       originBody = JSON.parse(this.inputData.value.body.replace(/\r?\n|\r/g, ''));
       this.testCases.push({body: originBody, state: environment.HTTP_BODY_STATE.ORIGIN});
     }

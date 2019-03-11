@@ -15,7 +15,6 @@ export class ReqResViewComponent implements OnInit {
     this._reqRes.reqResPutPost$.subscribe(res => {
       if(res) {
         this.reqResData = res;
-        console.log('this.reqResData: ', this.reqResData);
       }
     }, err => {})
   }
