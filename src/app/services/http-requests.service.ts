@@ -12,7 +12,7 @@ export class HttpRequestsService {
     private _http: HttpClient
   ) { }
 
-  public callHttpMethod(method, url, body) {
-    return this._http[method](url, body).pipe(map((res) => {return {res, body}}), catchError(e => of({res: e.error, body})));
+  public callHttpMethod(method, url, body, query) {
+    return this._http[method](url, body).pipe(map((res) => {return {res, body, query}}), catchError(e => of({res: e.error, body})));
   }
 }

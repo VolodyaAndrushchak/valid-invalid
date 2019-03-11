@@ -1,4 +1,5 @@
 <div class="wrapper">
-  <pre class="request">{{item.body | json}}</pre>
+  <pre class="request" *ngIf="item.body">{{item.body | json}}</pre>
+  <pre class="request"  *ngIf="item.query">{{item.query | json}}</pre>
   <pre class="response">{{item.res | json}}</pre>
 </div>
