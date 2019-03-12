@@ -97,7 +97,7 @@ private changeMethod() {
       originBody['extraProperty2'] = 'test value 2';
       this.testCases.push({body: originBody});
       this.testCases.forEach(({body}, i) => {
-        promiseRequest.push(this._http.callHttpMethod(this.inputData.value.method, this.inputData.value.url, body, {}));
+        promiseRequest.push(this._http.callHttpMethod(this.inputData.value.method, this.inputData.value.url, body, undefined));
       });
     } else {
       let originQuery;
