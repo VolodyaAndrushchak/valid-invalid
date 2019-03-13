@@ -13,6 +13,19 @@ export class HttpRequestsService {
   ) { }
 
   public callHttpMethod(method, url, body, query) {
-    return this._http[method](url, body).pipe(map((res) => {return {res, body, query}}), catchError(e => of({res: e.error, body})));
+    const startData = new Date();
+    return this._http[method](url, body).pipe(map((res) => {
+      return {
+        res, 
+        body, 
+        query, 
+        latency: (new Date().getTime() - startData.getTime())/1000 
+      }
+    }), catchError(e => of({
+      res: e.error, 
+      body, 
+      query, 
+      latency: (new Date().getTime() - startData.getTime())/1000
+    })));
   }
 }
