@@ -11,3 +11,10 @@
     color: darkred;
     font-weight: bold;
 }
+
+.label-only-main {
+  width: calc(100% - 20px);;
+  position: relative;
+  left: 10px;
+  top: 1px;
+}

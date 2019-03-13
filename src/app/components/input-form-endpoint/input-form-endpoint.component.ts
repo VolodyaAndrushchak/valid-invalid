@@ -31,6 +31,9 @@ export class InputFormEndpointComponent implements OnInit {
         method: new FormControl('', [
           Validators.required
         ]),
+        isMainDataOnly: new FormControl(false, [
+          Validators.required
+        ]),
         body: new FormControl('', []),
         queryParams: new FormControl('', [
         ])
@@ -70,6 +73,7 @@ private changeMethod() {
 
   private setInputData() {
     let promiseRequest = [];
+    this.testCases = [];
     if (this.inputData.value.method === 'put' || this.inputData.value.method === 'post') {
       let originBody;
       this.isJsonValid = true;
@@ -79,23 +83,26 @@ private changeMethod() {
       originBody = JSON.parse(this.inputData.value.body.replace(/\r?\n|\r/g, ''));
 
       this.testCases.push({body: originBody, state: environment.HTTP_BODY_STATE.ORIGIN});
-      this.testCases.push({body: {}, state: environment.HTTP_BODY_STATE.GENERETED});
 
-      for (const property in originBody) {
-        if (originBody.hasOwnProperty(property)) {
-          this.otherValue.forEach(item => {
-            originBody[property] = item;
-            this.testCases.push({body:  _.cloneDeep(originBody), state: environment.HTTP_BODY_STATE.GENERETED});
-          })
+      if (!this.inputData.value.isMainDataOnly) {
+        this.testCases.push({body: {}, state: environment.HTTP_BODY_STATE.GENERETED});
+
+        for (const property in originBody) {
+          if (originBody.hasOwnProperty(property)) {
+            this.otherValue.forEach(item => {
+              originBody[property] = item;
+              this.testCases.push({body:  _.cloneDeep(originBody), state: environment.HTTP_BODY_STATE.GENERETED});
+            })
+          }
+          originBody = JSON.parse(this.inputData.value.body.replace(/\r?\n|\r/g, ''));
         }
-        originBody = JSON.parse(this.inputData.value.body.replace(/\r?\n|\r/g, ''));
-      }
 
-      //add redundant properties
-      originBody['extraProperty1'] = 'test value 1';
-      this.testCases.push({body: originBody});
-      originBody['extraProperty2'] = 'test value 2';
-      this.testCases.push({body: originBody});
+        //add redundant properties
+        originBody['extraProperty1'] = 'test value 1';
+        this.testCases.push({body: originBody});
+        originBody['extraProperty2'] = 'test value 2';
+        this.testCases.push({body: originBody});
+      }
       this.testCases.forEach(({body}, i) => {
         promiseRequest.push(this._http.callHttpMethod(this.inputData.value.method, this.inputData.value.url, body, undefined));
       });
@@ -103,24 +110,26 @@ private changeMethod() {
       let originQuery;
       originQuery = JSON.parse(this.inputData.value.queryParams.replace(/\r?\n|\r/g, ''));
       this.testCases.push({query: originQuery, state: environment.HTTP_BODY_STATE.ORIGIN});
-      this.testCases.push({query: {}, state: environment.HTTP_BODY_STATE.GENERETED});
 
-      for (const property in originQuery) {
-        if (originQuery.hasOwnProperty(property)) {
-          this.otherValue.forEach(item => {
-            originQuery[property] = item;
-            this.testCases.push({query:  _.cloneDeep(originQuery)});
-          })
+      if (!this.inputData.value.isMainDataOnly) {
+        this.testCases.push({query: {}, state: environment.HTTP_BODY_STATE.GENERETED});
+
+        for (const property in originQuery) {
+          if (originQuery.hasOwnProperty(property)) {
+            this.otherValue.forEach(item => {
+              originQuery[property] = item;
+              this.testCases.push({query:  _.cloneDeep(originQuery)});
+            })
+          }
+          originQuery = JSON.parse(this.inputData.value.queryParams.replace(/\r?\n|\r/g, ''));
         }
-        originQuery = JSON.parse(this.inputData.value.queryParams.replace(/\r?\n|\r/g, ''));
+
+        //add redundant properties
+        originQuery['extraProperty1'] = 'test value 1';
+        this.testCases.push({query: originQuery});
+        originQuery['extraProperty2'] = 'test value 2';
+        this.testCases.push({query: originQuery});
       }
-
-      //add redundant properties
-      originQuery['extraProperty1'] = 'test value 1';
-      this.testCases.push({query: originQuery});
-      originQuery['extraProperty2'] = 'test value 2';
-      this.testCases.push({query: originQuery});
-
       this.testCases.forEach(({query}, i) => {
         promiseRequest.push(this._http.callHttpMethod(this.inputData.value.method, this.inputData.value.url + this.serialize(query), undefined, query));
       });
