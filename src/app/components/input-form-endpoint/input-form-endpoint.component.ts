@@ -3,8 +3,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { forkJoin, Observable } from 'rxjs';
 import { HttpRequestsService } from '../../services/http-requests.service';
 import { ReqResOperationService } from '../../services/req-res-operation.service';
+import { CommonService } from '../../services/common.service';
 import { environment } from '../../../environments/environment';
 import { Method } from '../../interfaces/method.interface';
+import { TestCase } from '../../interfaces/test-case.interface';
 import * as _ from 'lodash'; 
 
 @Component({
@@ -15,7 +17,7 @@ import * as _ from 'lodash';
 export class InputFormEndpointComponent implements OnInit {
 
   public inputData: FormGroup;
-  public testCases: Array<any> = [];
+  public testCases: Array<TestCase> = [];
   public otherValue = environment.wrongPropValue;
   private methods: Array<Method> = environment.methods;
   private promiseRequest: Array<Observable<null>> = [];
@@ -23,7 +25,8 @@ export class InputFormEndpointComponent implements OnInit {
   private bodyOrQuery: string;
   constructor(
     private _http: HttpRequestsService,
-    private _reqRes: ReqResOperationService
+    private _reqRes: ReqResOperationService,
+    private _common: CommonService
   ) {
     this.inputData = new FormGroup(
       {
@@ -43,17 +46,7 @@ export class InputFormEndpointComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
-}
-
-   private IsJsonString(str) {
-    try {
-     JSON.parse(str);
-    } catch (e) {
-      return false;
-    }
-    return true;
-}
+  ngOnInit() {}
 
 private changeMethod() {
   const method = this.inputData.value.method;
@@ -84,6 +77,7 @@ private changeMethod() {
 
     this.bodyQueryValidation(this.inputData.value[this.bodyOrQuery]);
     let parsedBodyOrQuery = JSON.parse(this.inputData.value[this.bodyOrQuery].replace(/\r?\n|\r/g, ''));
+    //add origin data
     let itemCase = {state: environment.HTTP_BODY_STATE.ORIGIN};
     itemCase[this.bodyOrQuery] = parsedBodyOrQuery;
     this.testCases.push(itemCase);
@@ -96,7 +90,7 @@ private changeMethod() {
     this.testCases.forEach((item, i) => {
       this.promiseRequest.push(this._http.callHttpMethod(
         this.inputData.value.method, 
-        item.queryParams ? this.inputData.value.url + this.serialize(item.queryParams) : this.inputData.value.url,
+        item.queryParams ? this.inputData.value.url + this._http.serialize(item.queryParams) : this.inputData.value.url,
         item.body ? item.body: undefined, 
         item.queryParams ? item.queryParams: undefined
         ));
@@ -108,6 +102,7 @@ private changeMethod() {
   }
 
   private testDataGeneration(testCases, data, propertyName) {
+    //empty data as test case
     let emptyBody = {state: environment.HTTP_BODY_STATE.GENERETED};
     emptyBody[propertyName] = {};
     testCases.push(emptyBody);
@@ -124,6 +119,7 @@ private changeMethod() {
       data = JSON.parse(this.inputData.value[propertyName].replace(/\r?\n|\r/g, ''));
     }
 
+    //extra property as test case
     let exrtaObj = {};
     exrtaObj[propertyName] = 'test value 1';
     testCases.push(exrtaObj);
@@ -133,22 +129,7 @@ private changeMethod() {
 
   private bodyQueryValidation(obj) {
     this.isJsonValid = true;
-    this.isJsonValid = this.IsJsonString(obj);
+    this.isJsonValid = this._common.IsJsonString(obj);
     if (!this.isJsonValid) throw new Error('Invalid json');
   }
-
-  private serialize(obj) {
-    let str = [];
-    for (let p in obj)
-      if (obj.hasOwnProperty(p)) {
-        const value = obj[p];
-        if(obj[p] instanceof Array || obj[p] instanceof Object){
-          str.push(encodeURIComponent(p) + "=" + JSON.stringify(obj[p]));
-        } else {
-          str.push(encodeURIComponent(p) + "=" + encodeURIComponent(value));
-        }
-      }
-    return str.join("&");
-  }
-  
 }

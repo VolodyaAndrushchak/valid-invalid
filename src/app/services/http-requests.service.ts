@@ -28,4 +28,21 @@ export class HttpRequestsService {
       latency: (new Date().getTime() - startData.getTime())/1000
     })));
   }
+
+  public serialize(obj) {
+    let str = [];
+    for (let p in obj)
+      if (obj.hasOwnProperty(p)) {
+        const value = obj[p];
+        if(obj[p] instanceof Array || obj[p] instanceof Object){
+          str.push(encodeURIComponent(p) + "=" + JSON.stringify(obj[p]));
+        } else {
+          str.push(encodeURIComponent(p) + "=" + encodeURIComponent(value));
+        }
+      }
+    return str.join("&");
+  }
+
+
+
 }
