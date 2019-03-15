@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { HttpRequestsService } from '../../services/http-requests.service';
 import { ReqResOperationService } from '../../services/req-res-operation.service';
 import { environment } from '../../../environments/environment';
 import { Method } from '../../interfaces/method.interface';
-import * as _ from 'lodash' ; 
+import * as _ from 'lodash'; 
 
 @Component({
   selector: 'app-input-form-endpoint',
@@ -18,6 +18,7 @@ export class InputFormEndpointComponent implements OnInit {
   public testCases: Array<any> = [];
   public otherValue = environment.wrongPropValue;
   private methods: Array<Method> = environment.methods;
+  private promiseRequest: Array<Observable<null>> = [];
   private isJsonValid: boolean = true;
   constructor(
     private _http: HttpRequestsService,
@@ -42,13 +43,13 @@ export class InputFormEndpointComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
+}
 
-   IsJsonString(str) {
+   private IsJsonString(str) {
     try {
-        JSON.parse(str);
+     JSON.parse(str);
     } catch (e) {
-        return false;
+      return false;
     }
     return true;
 }
@@ -72,72 +73,67 @@ private changeMethod() {
   }
 
   private setInputData() {
-    let promiseRequest = [];
     this.testCases = [];
     if (this.inputData.value.method === 'put' || this.inputData.value.method === 'post') {
-      let originBody;
-      this.isJsonValid = true;
-      this.isJsonValid = this.IsJsonString(this.inputData.value.body);
-      if (!this.isJsonValid) throw new Error('Invalid json');
+      this.bodyQueryValidation(this.inputData.value.body);
 
-      originBody = JSON.parse(this.inputData.value.body.replace(/\r?\n|\r/g, ''));
-
+      let originBody = JSON.parse(this.inputData.value.body.replace(/\r?\n|\r/g, ''));
       this.testCases.push({body: originBody, state: environment.HTTP_BODY_STATE.ORIGIN});
 
       if (!this.inputData.value.isMainDataOnly) {
-        this.testCases.push({body: {}, state: environment.HTTP_BODY_STATE.GENERETED});
-
-        for (const property in originBody) {
-          if (originBody.hasOwnProperty(property)) {
-            this.otherValue.forEach(item => {
-              originBody[property] = item;
-              this.testCases.push({body:  _.cloneDeep(originBody), state: environment.HTTP_BODY_STATE.GENERETED});
-            })
-          }
-          originBody = JSON.parse(this.inputData.value.body.replace(/\r?\n|\r/g, ''));
-        }
-
-        //add redundant properties
-        originBody['extraProperty1'] = 'test value 1';
-        this.testCases.push({body: originBody});
-        originBody['extraProperty2'] = 'test value 2';
-        this.testCases.push({body: originBody});
+        this.testCases = this.testDataGeneration(this.testCases, originBody, 'body', 'body');
       }
       this.testCases.forEach(({body}, i) => {
-        promiseRequest.push(this._http.callHttpMethod(this.inputData.value.method, this.inputData.value.url, body, undefined));
+        this.promiseRequest.push(this._http.callHttpMethod(this.inputData.value.method, this.inputData.value.url, body, undefined));
       });
     } else {
-      let originQuery;
-      originQuery = JSON.parse(this.inputData.value.queryParams.replace(/\r?\n|\r/g, ''));
+      this.bodyQueryValidation(this.inputData.value.queryParams);
+
+      let originQuery = JSON.parse(this.inputData.value.queryParams.replace(/\r?\n|\r/g, ''));
       this.testCases.push({query: originQuery, state: environment.HTTP_BODY_STATE.ORIGIN});
 
       if (!this.inputData.value.isMainDataOnly) {
-        this.testCases.push({query: {}, state: environment.HTTP_BODY_STATE.GENERETED});
-
-        for (const property in originQuery) {
-          if (originQuery.hasOwnProperty(property)) {
-            this.otherValue.forEach(item => {
-              originQuery[property] = item;
-              this.testCases.push({query:  _.cloneDeep(originQuery)});
-            })
-          }
-          originQuery = JSON.parse(this.inputData.value.queryParams.replace(/\r?\n|\r/g, ''));
-        }
-
-        //add redundant properties
-        originQuery['extraProperty1'] = 'test value 1';
-        this.testCases.push({query: originQuery});
-        originQuery['extraProperty2'] = 'test value 2';
-        this.testCases.push({query: originQuery});
+        this.testCases = this.testDataGeneration(this.testCases, originQuery, 'query', 'queryParams');
       }
       this.testCases.forEach(({query}, i) => {
-        promiseRequest.push(this._http.callHttpMethod(this.inputData.value.method, this.inputData.value.url + this.serialize(query), undefined, query));
+        this.promiseRequest.push(this._http.callHttpMethod(this.inputData.value.method, this.inputData.value.url + this.serialize(query), undefined, query));
       });
     }
 
-    forkJoin(promiseRequest).subscribe(res => {
+    forkJoin(this.promiseRequest).subscribe(res => {
       this._reqRes.reqResPutPostData = res;
     }, err => {}); 
+  }
+
+  private testDataGeneration(testCases, data, propertyName, formName) {
+    let obj = {};
+    obj[propertyName] = {};
+    obj['state'] = environment.HTTP_BODY_STATE.GENERETED
+    testCases.push(obj);
+
+    for (const property in data) {
+      if (data.hasOwnProperty(property)) {
+        this.otherValue.forEach(item => {
+          data[property] = item;
+          let testObj = {};
+          testObj[propertyName] = _.cloneDeep(data);
+          testCases.push(testObj);
+        })
+      }
+      data = JSON.parse(this.inputData.value[formName].replace(/\r?\n|\r/g, ''));
+    }
+
+    let exrtaObj = {};
+    exrtaObj[propertyName] = 'test value 1';
+    testCases.push(exrtaObj);
+
+    return testCases;
+  }
+
+  private bodyQueryValidation(obj) {
+    this.isJsonValid = true;
+    this.isJsonValid = this.IsJsonString(obj);
+    if (!this.isJsonValid) throw new Error('Invalid json');
   }
 
   private serialize(obj) {
