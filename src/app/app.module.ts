@@ -10,6 +10,7 @@ import { MainPageComponent } from './pages/main-page/main-page.component';
 import { ReqResViewComponent } from './components/req-res-view/req-res-view.component';
 import { ReqResItemComponent } from './components/req-res-item/req-res-item.component';
 import { TitleTestDataComponent } from './components/title-test-data/title-test-data.component';
+import { StatusResponseDirective } from './directives/status-response.directive';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { TitleTestDataComponent } from './components/title-test-data/title-test-
     MainPageComponent,
     ReqResViewComponent,
     ReqResItemComponent,
-    TitleTestDataComponent
+    TitleTestDataComponent,
+    StatusResponseDirective
   ],
   imports: [
     BrowserModule,

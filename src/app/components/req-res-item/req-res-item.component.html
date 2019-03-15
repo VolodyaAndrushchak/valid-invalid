@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div class="wrapper" [appStatusResponse]="item.isSuccess">
   <pre class="request" *ngIf="item.body">Body: {{item.body | json}}
     <p class="latency">Latency: {{item.latency}} seconds</p>
   </pre>
