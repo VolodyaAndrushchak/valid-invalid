@@ -8,6 +8,8 @@
 
 .request {
     border-right: 1px solid darkred;
+    position: relative;
+    left: 5px;
 }
 
 .response {
@@ -15,7 +17,7 @@
 }
 
 .wrapper {
-    border: 1px solid black;
+    border-bottom: 1px solid black;
     height: 100px;
 }
 
@@ -29,5 +31,6 @@ pre {
 }
 
 .latency {
-  display: contents;
+    position: relative;
+    left: 15px;
 }

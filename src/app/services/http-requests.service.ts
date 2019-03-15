@@ -19,13 +19,15 @@ export class HttpRequestsService {
         res, 
         body, 
         query, 
-        latency: (new Date().getTime() - startData.getTime())/1000 
+        latency: (new Date().getTime() - startData.getTime())/1000,
+        isSuccess: true 
       }
     }), catchError(e => of({
       res: e.error, 
       body, 
       query, 
-      latency: (new Date().getTime() - startData.getTime())/1000
+      latency: (new Date().getTime() - startData.getTime())/1000,
+      isSuccess: false
     })));
   }
 
