@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ReqResOperationService } from '../../services/req-res-operation.service';
+import { ReqResOperationService } from '@services/req-res-operation.service';
 
 @Component({
   selector: 'app-req-res-view',
