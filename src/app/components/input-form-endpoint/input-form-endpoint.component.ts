@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { forkJoin, Observable } from 'rxjs';
-import { HttpRequestsService } from '../../services/http-requests.service';
-import { ReqResOperationService } from '../../services/req-res-operation.service';
-import { CommonService } from '../../services/common.service';
-import { environment } from '../../../environments/environment';
-import { Method } from '../../interfaces/method.interface';
-import { TestCase } from '../../interfaces/test-case.interface';
+import { HttpRequestsService } from '@services/http-requests.service';
+import { ReqResOperationService } from '@services/req-res-operation.service';
+import { CommonService } from '@services/common.service';
+import { environment } from '@environments/environment';
+import { Method } from '@interfaces/method.interface';
+import { TestCase } from '@interfaces/test-case.interface';
 import * as _ from 'lodash'; 
 
 @Component({
