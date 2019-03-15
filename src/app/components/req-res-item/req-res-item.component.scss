@@ -8,6 +8,8 @@
 
 .request {
     border-right: 1px solid darkred;
+    position: relative;
+    left: 5px;
 }
 
 .response {
@@ -29,5 +31,4 @@ pre {
 }
 
 .latency {
-  display: contents;
 }

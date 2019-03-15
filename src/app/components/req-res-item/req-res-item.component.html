@@ -1,8 +1,8 @@
 <div class="wrapper">
-  <pre class="request" *ngIf="item.body">{{item.body | json}} 
+  <pre class="request" *ngIf="item.body">Body: {{item.body | json}}
     <p class="latency">Latency: {{item.latency}} seconds</p>
   </pre>
-  <pre class="request"  *ngIf="item.query">{{item.query | json}}
+  <pre class="request"  *ngIf="item.query">Query: {{item.query | json}}
     <p class="latency">Latency: {{item.latency}} seconds</p>
   </pre>
   <pre class="response">{{item.res | json}}</pre>

@@ -9,6 +9,7 @@ import { InputFormEndpointComponent } from './components/input-form-endpoint/inp
 import { MainPageComponent } from './pages/main-page/main-page.component';
 import { ReqResViewComponent } from './components/req-res-view/req-res-view.component';
 import { ReqResItemComponent } from './components/req-res-item/req-res-item.component';
+import { TitleTestDataComponent } from './components/title-test-data/title-test-data.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { ReqResItemComponent } from './components/req-res-item/req-res-item.comp
     InputFormEndpointComponent,
     MainPageComponent,
     ReqResViewComponent,
-    ReqResItemComponent
+    ReqResItemComponent,
+    TitleTestDataComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,14 @@
+.wrapper {
+  width: 800px;
+  margin: auto;
+}
+
+.test-data, .http-response {
+  width: 400px;
+  display: inline-flex;
+} 
+
+.test-data p, .http-response p{
+  margin: auto;
+  font-size: 25px;
+}
