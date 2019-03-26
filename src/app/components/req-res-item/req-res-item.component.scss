@@ -7,7 +7,7 @@
 }
 
 .request {
-    border-right: 1px solid darkred;
+    border-right: 1px dashed darkred;
     position: relative;
     left: 5px;
 }
@@ -17,8 +17,9 @@
 }
 
 .wrapper {
-    border-bottom: 1px solid black;
     height: 100px;
+    margin-bottom: 5px;
+    border-radius: 5px;
 }
 
 pre {

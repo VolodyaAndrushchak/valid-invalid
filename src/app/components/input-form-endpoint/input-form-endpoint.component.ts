@@ -39,8 +39,8 @@ export class InputFormEndpointComponent implements OnInit {
         isMainDataOnly: new FormControl(false, [
           Validators.required
         ]),
-        body: new FormControl('', []),
-        queryParams: new FormControl('', [
+        body: new FormControl('{}', []),
+        queryParams: new FormControl('{}', [
         ])
       }
     );
