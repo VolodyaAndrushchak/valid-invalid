@@ -30,7 +30,7 @@ export class ReqResOperationService {
     this.reqResPutPost$.next(value);
   }
 
-  public testDataGeneration(url, method, requestContentType, content, isMainDataOnly) {
+  public testDataGeneration(headers, url, method, requestContentType, content, isMainDataOnly) {
     this.testCases = [];
     this.promiseRequest = [];
     let parsedBodyOrQuery = JSON.parse(content);
@@ -47,6 +47,7 @@ export class ReqResOperationService {
 
     this.testCases.forEach((item, i) => {
       this.promiseRequest.push(this._http.callHttpMethod(
+        headers,
         method, 
         item.queryParams ? url + this._http.serialize(item.queryParams) : url,
         item.body ? item.body: undefined, 

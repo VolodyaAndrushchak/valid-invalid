@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
 import { HttpRequestsService } from '@services/http-requests.service';
 import { ReqResOperationService } from '@services/req-res-operation.service';
 import { CommonService } from '@services/common.service';
@@ -18,10 +18,12 @@ export class InputFormEndpointComponent implements OnInit {
   private methods: Array<Method> = environment.methods;
   private isJsonValid: boolean = true;
   private bodyOrQuery: string;
+  private headers: FormArray;
   constructor(
     private _http: HttpRequestsService,
     private _reqRes: ReqResOperationService,
-    private _common: CommonService
+    private _common: CommonService,
+    private formBuilder: FormBuilder
   ) {
     this.inputData = new FormGroup(
       {
@@ -36,7 +38,8 @@ export class InputFormEndpointComponent implements OnInit {
         ]),
         body: new FormControl('{}', []),
         queryParams: new FormControl('{}', [
-        ])
+        ]),
+        headers: this.formBuilder.array([])
       }
     );
   }
@@ -61,6 +64,23 @@ private changeMethod() {
     this.inputData.controls['queryParams'].updateValueAndValidity();
   }
 
+  private createHeader() {
+    return this.formBuilder.group({
+      headerName: '',
+      headerValue: ''
+    });
+  }
+
+  private addHeader(): void {
+    this.headers = this.inputData.get('headers') as FormArray;
+    this.headers.push(this.createHeader());
+  }
+
+  private deleteHeader(i: number): void {
+    const header = <FormArray>this.inputData.controls.headers;
+    header.removeAt(i);
+  }
+
   private setInputData() {
     if (this.inputData.value.method === 'put' || this.inputData.value.method === 'post') {
       this.bodyOrQuery = 'body';
@@ -70,6 +90,7 @@ private changeMethod() {
 
     this.bodyQueryValidation(this.inputData.value[this.bodyOrQuery]);
     this._reqRes.testDataGeneration(
+      this.inputData.value.headers,
       this.inputData.value.url,
       this.inputData.value.method,
       this.bodyOrQuery,
