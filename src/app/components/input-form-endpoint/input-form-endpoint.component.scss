@@ -1,5 +1,5 @@
 .wrapper {
-    width: 600px;
+    width: 800px;
     margin:20px auto;
 }
 
@@ -17,4 +17,21 @@
   position: relative;
   left: 10px;
   top: 1px;
+}
+
+.header-name, .header-value {
+  width: 43%;
+  display: inline;
+  margin-right: 4%;
+}
+
+.btn-delete {
+  position: relative;
+  top: -3px;
+  display: inline;
+  width: 6%;
+}
+
+.headers-array {
+    margin-bottom: 10px;
 }

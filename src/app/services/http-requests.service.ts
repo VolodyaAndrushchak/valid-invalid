@@ -12,9 +12,13 @@ export class HttpRequestsService {
     private _http: HttpClient
   ) { }
 
-  public callHttpMethod(method, url, body, query) {
+  public callHttpMethod(headers, method, url, body, query) {
+    let httpHeaders = {};
+    headers.forEach(h => {
+      httpHeaders[h.headerName] = h.headerValue
+    });
     const startData = new Date();
-    return this._http[method](url, body).pipe(map((res) => {
+    return this._http[method](url, body ? body : {headers: httpHeaders}, {headers: httpHeaders}).pipe(map((res) => {
       return {
         res, 
         body, 

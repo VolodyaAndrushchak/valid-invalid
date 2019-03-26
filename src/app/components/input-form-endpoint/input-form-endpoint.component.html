@@ -29,6 +29,20 @@
     ></textarea>
     <p *ngIf="!isJsonValid" class="error">JSON body has invalid structure!</p>
 
-    <button class="btn btn-danger btn-submit" [disabled]="inputData.invalid">Start</button>
+    <hr>
+    <div class="headers">
+      <h5>Headers</h5>
+      <div formArrayName="headers" class="headers-array"
+        *ngFor="let header of inputData.get('headers').controls; let i = index;">
+        <div [formGroupName]="i">
+          <input formControlName="headerName" placeholder="header name" class="form-control header-name" required>
+          <input formControlName="headerValue" placeholder="header value" class="form-control header-value" required>
+          <button type="button" class="btn btn-danger btn-delete" (click)="deleteHeader(i)">X</button>
+        </div>
+      </div>
+      <button class="btn btn-success" (click)="addHeader()" type="button">Add header</button>
+    </div>
+    <hr>
+    <button class="btn btn-danger btn-submit" [disabled]="inputData.invalid" type="submit">Start tests</button>
   </form>
 </div>
