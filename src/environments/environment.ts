@@ -38,7 +38,8 @@ export const environment = {
   HTTP_BODY_STATE: {
     ORIGIN: 'ORIGIN',
     GENERETED: 'GENERETED'
-  }
+  },
+  CONTACT_EMAIL: 'contact@mail.com'
 };
 
 /*

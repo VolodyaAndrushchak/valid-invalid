@@ -11,6 +11,8 @@ import { ReqResViewComponent } from './components/req-res-view/req-res-view.comp
 import { ReqResItemComponent } from './components/req-res-item/req-res-item.component';
 import { TitleTestDataComponent } from './components/title-test-data/title-test-data.component';
 import { StatusResponseDirective } from './directives/status-response.directive';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { StatusResponseDirective } from './directives/status-response.directive'
     ReqResViewComponent,
     ReqResItemComponent,
     TitleTestDataComponent,
-    StatusResponseDirective
+    StatusResponseDirective,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
