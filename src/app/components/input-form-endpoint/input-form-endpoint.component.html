@@ -2,30 +2,33 @@
   <h3>Input form</h3>
   <p>(enter your data for testing)</p>
   <form [formGroup]="inputData" (ngSubmit)="setInputData()">
-    <label for="url">URL</label>
-    <input name="url" formControlName="url" class="form-control"/>
+    <label for="url" class="subtitle">URL <i class="explanation">(without last slash - /)</i></label>
+    <input name="url" formControlName="url" class="form-control" placeholder="Please, tap your url"/>
 
-    <label for="method">Chose type of method</label>
+    <label for="method" class="subtitle">Chose type of method</label>
     <select name="method" class="form-control" formControlName="method" (change)="changeMethod()">
+      <option value="" disabled selected hidden>Select your http method</option>
       <option *ngFor="let method of methods" [value]="method.shortName">{{method.fullName}}</option>
     </select>
 
     <input type="checkbox" name="checkbox" class="input-only-main" value="value" formControlName="isMainDataOnly">
     <label for="checkbox_id" class="label-only-main">Only main query params or body</label>
 
-    <label for="body" *ngIf="
+    <label for="body" class="subtitle" *ngIf="
       inputData.controls.method.value === 'post' || 
-      inputData.controls.method.value === 'put'">Body</label>
+      inputData.controls.method.value === 'put'">Body <i class="explanation">(only JSON valid structure)</i></label>
     <textarea name="body" formControlName="body" class="form-control" *ngIf="
       inputData.controls.method.value === 'post' || 
       inputData.controls.method.value === 'put'"
+      placeholder="body in JSON structure"
     ></textarea>
-    <label for="body" *ngIf="
+    <label for="body" class="subtitle" *ngIf="
       inputData.controls.method.value === 'get' || 
-      inputData.controls.method.value === 'delete'">Query params</label>
+      inputData.controls.method.value === 'delete'">Query params <i class="explanation">(only JSON valid structure)</i></label>
     <textarea name="body" formControlName="queryParams" class="form-control" *ngIf="
       inputData.controls.method.value === 'get' || 
       inputData.controls.method.value === 'delete'"
+      placeholder="query params in JSON structure"
     ></textarea>
     <p *ngIf="!isJsonValid" class="error">JSON body has invalid structure!</p>
 
