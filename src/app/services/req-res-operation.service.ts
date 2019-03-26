@@ -69,7 +69,15 @@ export class ReqResOperationService {
     for (const property in data) {
       if (data.hasOwnProperty(property)) {
         this.propValue.forEach(item => {
-          data[property] = item;
+          if (item === undefined) {
+            data[property] = item;
+          } else {
+            data[property] = '<i>' + item + '</i>';
+          }
+          
+          //Object.defineProperty(data, '<i>' + property + '</i>',
+          //  Object.getOwnPropertyDescriptor(data, property));
+         // delete data[property];
           let testObj = {};
           testObj[propertyName] = _.cloneDeep(data);
           testCases.push(testObj);

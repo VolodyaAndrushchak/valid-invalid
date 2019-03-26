@@ -1,7 +1,8 @@
 <div class="wrapper" [appStatusResponse]="item.isSuccess">
-  <pre class="request" *ngIf="item.body">Body: {{item.body | json}}
-    <p class="latency">Latency: {{item.latency}} seconds</p>
+  <pre class="request" *ngIf="item.body" [innerHTML]="item.body | json">
+      <pre><p class="latency">Latency: {{item.latency}} seconds</p></pre>
   </pre>
+  
   <pre class="request"  *ngIf="item.query">Query: {{item.query | json}}
     <p class="latency">Latency: {{item.latency}} seconds</p>
   </pre>

@@ -35,3 +35,12 @@ pre {
     position: relative;
     left: 15px;
 }
+
+p, pre {
+  color: white;
+}
+
+/deep/ i {
+    display: contents;
+    color: blue;
+  }

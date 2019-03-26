@@ -14,6 +14,10 @@ export class ReqResItemComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    if (this.item) {
+      //this.item = JSON.stringify(this.item);
+      console.log(this.item);
+    }
   }
 
 }
