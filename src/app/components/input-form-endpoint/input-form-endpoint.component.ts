@@ -68,6 +68,7 @@ private changeMethod() {
 
   private setInputData() {
     this.testCases = [];
+    this.promiseRequest = [];
 
     if (this.inputData.value.method === 'put' || this.inputData.value.method === 'post') {
       this.bodyOrQuery = 'body';
@@ -77,6 +78,7 @@ private changeMethod() {
 
     this.bodyQueryValidation(this.inputData.value[this.bodyOrQuery]);
     let parsedBodyOrQuery = JSON.parse(this.inputData.value[this.bodyOrQuery].replace(/\r?\n|\r/g, ''));
+    
     //add origin data
     let itemCase = {state: environment.HTTP_BODY_STATE.ORIGIN};
     itemCase[this.bodyOrQuery] = parsedBodyOrQuery;
@@ -123,7 +125,6 @@ private changeMethod() {
     let exrtaObj = {};
     exrtaObj[propertyName] = 'test value 1';
     testCases.push(exrtaObj);
-
     return testCases;
   }
 
