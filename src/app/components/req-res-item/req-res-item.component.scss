@@ -1,9 +1,9 @@
 .request, .response {
     width: 398px;
-    display: inline-flex;
+    display: inline-block;
     margin-bottom: 0;
     height: 95%;
-    overflow-y: scroll;
+    overflow: scroll;
 }
 
 .request {
@@ -24,6 +24,7 @@
 
 pre {
     font-size: 12px;
+    overflow: unset;
 }
 
 .line {
@@ -31,9 +32,11 @@ pre {
     height: auto;
 }
 
-.latency {
+.extra-prop {
     position: relative;
-    left: 15px;
+    left: 10px;
+    font-size: 14px;
+    color:white;
 }
 
 p, pre {
@@ -43,4 +46,22 @@ p, pre {
 /deep/ i {
     display: contents;
     color: blue;
-  }
+}
+
+.subproperty {
+  margin-bottom: 0;
+  position: relative;
+  left: 10px;
+}
+
+.request pre {
+  position: relative;
+  left: 10px;
+}
+
+.property {
+  margin-bottom: 0;
+  margin-top: 10px;
+  margin-left: 10px;
+  font-size: 14px;
+}

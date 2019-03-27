@@ -1,10 +1,26 @@
-<div class="wrapper" [appStatusResponse]="item.isSuccess">
-  <pre class="request" *ngIf="item.body" [innerHTML]="item.body | json">
-      <pre><p class="latency">Latency: {{item.latency}} seconds</p></pre>
-  </pre>
+<div class="wrapper" [appStatusResponse]="item.isSuccess" >
+  <div class="request" *ngIf="item.body">
+    <p class="extra-prop">Latency: <i>{{item.latency}} seconds</i></p>
+    <div *ngIf="item.changedProp" class="extra-prop">
+      Changed property: 
+      <p class="subproperty">name: <i>{{item.changedProp.property}}</i></p>
+      <p class="subproperty">value: <i>{{item.changedProp.value}}</i></p>
+      <p class="subproperty">as type: <i>{{item.changedProp.type}}</i></p>
+    </div>
+    <p class="property">Body:</p>
+    <pre [innerHTML]="item.body | json"></pre>
+  </div>
   
-  <pre class="request"  *ngIf="item.query">Query: {{item.query | json}}
-    <p class="latency">Latency: {{item.latency}} seconds</p>
-  </pre>
+  <div class="request" *ngIf="item.query">
+      <p class="extra-prop">Latency: <i>{{item.latency}} seconds</i></p>
+      <div *ngIf="item.changedProp" class="extra-prop">
+        Changed property: 
+        <p class="subproperty">mame: <i>{{item.changedProp.property}}</i></p>
+        <p class="subproperty">value: <i>{{item.changedProp.value}}</i></p>
+        <p class="subproperty">as type: <i>{{item.changedProp.type}}</i></p>
+      </div>
+      <p class="property">Query:</p>
+      <pre [innerHTML]="item.query | json"></pre>
+  </div>
   <pre class="response">{{item.res | json}}</pre>
 </div>
