@@ -36,7 +36,7 @@ export class ReqResOperationService {
     let parsedBodyOrQuery = JSON.parse(content);
 
     //add origin data
-    let itemCase = {state: environment.HTTP_BODY_STATE.ORIGIN};
+    let itemCase = {state: environment.HTTP_BODY_STATE.ORIGIN, changedProp: null};
     itemCase[requestContentType] = parsedBodyOrQuery;
     this.testCases.push(itemCase);
 
@@ -48,10 +48,11 @@ export class ReqResOperationService {
     this.testCases.forEach((item, i) => {
       this.promiseRequest.push(this._http.callHttpMethod(
         headers,
-        method, 
+        method,
+        item.changedProp,
         item.queryParams ? url + this._http.serialize(item.queryParams) : url,
         item.body ? item.body: undefined, 
-        item.queryParams ? item.queryParams: undefined
+        item.queryParams ? item.queryParams: undefined,
         ));
     });
 
@@ -69,9 +70,27 @@ export class ReqResOperationService {
     for (const property in data) {
       if (data.hasOwnProperty(property)) {
         this.propValue.forEach(item => {
-          data[property] = item;
-          let testObj = {};
+          if (item === undefined) {
+            data[property] = item;
+          } else {
+            data[property] = '<i>' + item + '</i>';
+          }
+          
+          //Object.defineProperty(data, '<i>' + property + '</i>',
+          //  Object.getOwnPropertyDescriptor(data, property));
+         // delete data[property];
+          let testObj = {
+            changedProp: {
+              property: null,
+              value: null,
+              type: null
+            }
+          };
           testObj[propertyName] = _.cloneDeep(data);
+          testObj.changedProp.property = property;
+          testObj.changedProp.value = item;
+          testObj.changedProp.type = typeof item;
+          console.log('testObj: ', testObj, typeof item );
           testCases.push(testObj);
         })
       }

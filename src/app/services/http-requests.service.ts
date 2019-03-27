@@ -12,7 +12,7 @@ export class HttpRequestsService {
     private _http: HttpClient
   ) { }
 
-  public callHttpMethod(headers, method, url, body, query) {
+  public callHttpMethod(headers, method, changedProp, url, body, query) {
     let httpHeaders = {};
     headers.forEach(h => {
       httpHeaders[h.headerName] = h.headerValue
@@ -24,14 +24,16 @@ export class HttpRequestsService {
         body, 
         query, 
         latency: (new Date().getTime() - startData.getTime())/1000,
-        isSuccess: true 
+        isSuccess: true,
+        changedProp 
       }
     }), catchError(e => of({
       res: e.error, 
       body, 
       query, 
       latency: (new Date().getTime() - startData.getTime())/1000,
-      isSuccess: false
+      isSuccess: false,
+      changedProp
     })));
   }
 
