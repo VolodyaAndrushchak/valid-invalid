@@ -1,0 +1,26 @@
+<div class="wrapper">
+  <h5>Help</h5>
+  <p>In the url field you should put a valid http/https url which will be tested. You should't put 
+    <b>/</b> and <b>?</b> symbols in the end of your request.
+  </p>
+  <p>Than, choose http method.</p>
+  <p>When you did it, you can fill body for POST/PUT and query params for GET/DELETE methods. This data must be in JSON format.</p>
+  <p>If you have filled the form you can click <b>Start tests</b> button.</p>
+
+  <p class="before-prop">Script works with properties of your body or query params. Script tries to set diferent wrong values for every property.
+    Script sets next values in <b>every</b> property:
+  </p>
+  <pre>{{properties}}</pre>
+  <p>Than, script uses generated cases(body or query params) in separated http requests.
+    In blocks below you can see test case(body or query params), changed property and latency of request.
+  </p>
+  <p>Pay attention, that currently script works ONLY with not nested objects!</p>
+  <p>You can click <b>Only main query params or body</b> and script will run only <b>original</b> 
+    body or query params in the http request.</p>
+
+  <p>However, you can put headers for you request. Key and value must be valid as http headers. Also, you must delete
+    unused empty header/value key pair.
+  </p>
+</div>
+
+<hr>

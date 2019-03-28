@@ -19,6 +19,7 @@ export class InputFormEndpointComponent implements OnInit {
   private isJsonValid: boolean = true;
   private bodyOrQuery: string;
   private headers: FormArray;
+  private isHelpVisible: boolean = false;
   constructor(
     private _http: HttpRequestsService,
     private _reqRes: ReqResOperationService,
@@ -103,5 +104,10 @@ private changeMethod() {
     this.isJsonValid = true;
     this.isJsonValid = this._common.IsJsonString(obj);
     if (!this.isJsonValid) throw new Error('Invalid json');
+  }
+
+  private helpStatus() {
+    this.isHelpVisible = !this.isHelpVisible;
+    console.log('helpStatus: ', this.isHelpVisible);
   }
 }

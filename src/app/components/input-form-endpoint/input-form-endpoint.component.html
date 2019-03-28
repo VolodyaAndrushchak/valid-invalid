@@ -1,6 +1,8 @@
 <div class="wrapper">
   <h3>Input form</h3>
-  <p>(enter your data for testing)</p>
+  <p>(enter your data for testing - click here for <i class="help" (click)="helpStatus()">help</i>)</p>
+  <app-help *ngIf="isHelpVisible"></app-help>
+
   <form [formGroup]="inputData" (ngSubmit)="setInputData()">
     <label for="url" class="subtitle">URL <i class="explanation">(without last slash - /)</i></label>
     <input name="url" formControlName="url" class="form-control" placeholder="Please, tap your url"/>

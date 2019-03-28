@@ -13,6 +13,7 @@ import { TitleTestDataComponent } from './components/title-test-data/title-test-
 import { StatusResponseDirective } from './directives/status-response.directive';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { HelpComponent } from './components/help/help.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { FooterComponent } from './components/footer/footer.component';
     TitleTestDataComponent,
     StatusResponseDirective,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    HelpComponent
   ],
   imports: [
     BrowserModule,
