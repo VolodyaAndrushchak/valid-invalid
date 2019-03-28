@@ -50,7 +50,7 @@ export class ReqResOperationService {
         headers,
         method,
         item.changedProp,
-        item.queryParams ? url + this._http.serialize(item.queryParams) : url,
+        item.queryParams ? url + '/?' + this._http.serialize(item.queryParams) : url,
         item.body ? item.body: undefined, 
         item.queryParams ? item.queryParams: undefined,
         ));
