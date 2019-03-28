@@ -75,10 +75,7 @@ export class ReqResOperationService {
           } else {
             data[property] = '<i>' + item + '</i>';
           }
-          
-          //Object.defineProperty(data, '<i>' + property + '</i>',
-          //  Object.getOwnPropertyDescriptor(data, property));
-         // delete data[property];
+
           let testObj = {
             changedProp: {
               property: null,
@@ -90,7 +87,6 @@ export class ReqResOperationService {
           testObj.changedProp.property = property;
           testObj.changedProp.value = item;
           testObj.changedProp.type = typeof item;
-          console.log('testObj: ', testObj, typeof item );
           testCases.push(testObj);
         })
       }
